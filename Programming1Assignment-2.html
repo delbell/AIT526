@@ -3,7 +3,7 @@
 <head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Programming 1 Assignment - Chatbot Eliza</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>Programming1Assignment-2</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
 
@@ -14259,11 +14259,55 @@ a.anchor-link {
 <div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># import all the necessary packages</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Created on Sep  17 2023</span>
+<span class="sd">@authors: Group 4 - Bell, Conn, Miskinyar, Vallanadu</span>
+<span class="sd">AIT 526: Intro to NLP - Programming Assignment 1: Chatbox Eliza</span>
 
+<span class="sd">The Purpose:</span>
+<span class="sd">This program acts as a Psychotherapist named Eliza and engages in dialogue with a user, </span>
+<span class="sd">It can carry out &quot;word spotting&quot; and transform certain simple sentence forms from the user </span>
+<span class="sd">into questions to be asked back.</span>
+
+<span class="sd">Instructions:</span>
+<span class="sd">- Run the program</span>
+<span class="sd">- Respond to the promts given by Eliza.</span>
+<span class="sd">- Be sure to respond in simple statements like: I feel, I want, I should, because I....</span>
+
+<span class="sd">The algorithm:</span>
+<span class="sd">Functions made to handle pronoun substitution, generate a random response, and respond to user input.</span>
+
+<span class="sd">Example:</span>
+<span class="sd">Eliza: Hello! I&#39;m Eliza, a psychotherapist. Please begin by stating your name.</span>
+<span class="sd">User: Cathy</span>
+<span class="sd">Eliza: Hello Cathy! How can I assist you today?</span>
+<span class="sd">You:  I need help</span>
+<span class="sd">Eliza: What would it mean if you got help?</span>
+<span class="sd">You:  I would be happy</span>
+<span class="sd">Eliza: Is that the real reason?</span>
+<span class="sd">You:  yes</span>
+<span class="sd">Eliza: Okay, please elaborate.</span>
+<span class="sd">You:  I feel sad</span>
+<span class="sd">Eliza: Why do you feel sad?</span>
+<span class="sd">You:  I want money</span>
+<span class="sd">Eliza: Okay, please elaborate on your interest in money.</span>
+<span class="sd">You:  I need it</span>
+<span class="sd">Eliza: Why do you need it?</span>
+<span class="sd">You:  I should have it</span>
+<span class="sd">Eliza: I understand that you think you should have it. Can you explain why?</span>
+<span class="sd">You:  because I have bills</span>
+<span class="sd">Eliza: Can you elaborate on why?</span>
+<span class="sd">You:  no</span>
+<span class="sd">Eliza: Okay, anything else you want to talk about? If not please say type done or stop.</span>
+<span class="sd">You:  done</span>
+<span class="sd">Eliza: Thank you for talking with me. Goodbye!</span>
+<span class="sd">Eliza: Goodbye! Have a nice day, Cathy!</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="c1"># import all the necessary packages</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">random</span>
 </pre></div>
@@ -14276,15 +14320,19 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define a list of patterns and responses</span>
-<span class="n">patterns</span> <span class="o">=</span> <span class="p">[</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">patterns</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;I need (.*)&#39;</span><span class="p">,</span> <span class="p">[</span>
         <span class="s1">&#39;Why do you need </span><span class="si">{0}</span><span class="s1">?&#39;</span><span class="p">,</span>
         <span class="s1">&#39;What would it mean if you got </span><span class="si">{0}</span><span class="s1">?&#39;</span><span class="p">,</span>
         <span class="s1">&#39;Can you tell me more about your need for </span><span class="si">{0}</span><span class="s1">?&#39;</span>
+    <span class="p">]),</span>
+    <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;I would be (.*)&#39;</span><span class="p">,</span> <span class="p">[</span>
+        <span class="s1">&#39;Is that the real reason?&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;What other reasons come to mind?&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Can you elaborate on why?&#39;</span><span class="p">,</span>
     <span class="p">]),</span>
     <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Why (?:don</span><span class="se">\&#39;</span><span class="s1">?t|cannot|can</span><span class="se">\&#39;</span><span class="s1">?t) you ([^\?]+)\??&#39;</span><span class="p">,</span> <span class="p">[</span>
         <span class="s1">&#39;Do you really think I can</span><span class="se">\&#39;</span><span class="s1">t </span><span class="si">{0}</span><span class="s1">?&#39;</span><span class="p">,</span>
@@ -14294,11 +14342,26 @@ a.anchor-link {
     <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(.*)\s?because(.*)&#39;</span><span class="p">,</span> <span class="p">[</span>
         <span class="s1">&#39;Is that the real reason?&#39;</span><span class="p">,</span>
         <span class="s1">&#39;What other reasons come to mind?&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;Can you elaborate on why </span><span class="si">{0}</span><span class="s1"> because </span><span class="si">{1}</span><span class="s1">?&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Can you elaborate on why?&#39;</span><span class="p">,</span>
     <span class="p">]),</span>
-    <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;quit|exit|bye&#39;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;quit|exit|bye|done|stop&#39;</span><span class="p">,</span> <span class="p">[</span>
         <span class="s1">&#39;Thank you for talking with me. Goodbye!&#39;</span><span class="p">,</span>
         <span class="s1">&#39;Goodbye! Take care.&#39;</span>
+    <span class="p">]),</span>
+    <span class="p">(</span><span class="s2">&quot;I</span><span class="se">\\</span><span class="s2">&#39;?m (.*)&quot;</span><span class="p">,</span> <span class="p">[</span>
+        <span class="s1">&#39;Tell me more about how you are </span><span class="si">{0}</span><span class="s1">.&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Why do you feel </span><span class="si">{0}</span><span class="s1">?&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;I understand that you feel </span><span class="si">{0}</span><span class="s1">. Can you explain why?&#39;</span>
+    <span class="p">]),</span>
+    <span class="p">(</span><span class="s2">&quot;I am (.*)&quot;</span><span class="p">,</span> <span class="p">[</span>
+        <span class="s1">&#39;Tell me more about how you are </span><span class="si">{0}</span><span class="s1">.&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Why do you feel </span><span class="si">{0}</span><span class="s1">?&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;I understand that you feel </span><span class="si">{0}</span><span class="s1">. Can you explain why?&#39;</span>
+    <span class="p">]),</span>
+    <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;I should (.*)&#39;</span><span class="p">,</span> <span class="p">[</span>
+        <span class="s1">&#39;Tell me why you think you should </span><span class="si">{0}</span><span class="s1">.&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Why should you </span><span class="si">{0}</span><span class="s1">?&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;I understand that you think you should </span><span class="si">{0}</span><span class="s1">. Can you explain why?&#39;</span>
     <span class="p">]),</span>
     <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;I feel (.*)&#39;</span><span class="p">,</span> <span class="p">[</span>
         <span class="s1">&#39;Tell me more about your feelings.&#39;</span><span class="p">,</span>
@@ -14310,6 +14373,26 @@ a.anchor-link {
         <span class="s1">&#39;Hi there! What can I help you with?&#39;</span><span class="p">,</span>
         <span class="s1">&#39;Hey! What is on your mind?&#39;</span>
     <span class="p">]),</span>
+    <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;thanks|thank you&#39;</span><span class="p">,</span> <span class="p">[</span>
+        <span class="s1">&#39;You are welcome, tell me what else you would like to talk about.&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Glad I could help. What else is on your mind?&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Great to hear. What else would you like to chat about?&#39;</span>
+    <span class="p">]),</span>
+    <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;yes|maybe&#39;</span><span class="p">,</span> <span class="p">[</span>
+        <span class="s1">&#39;Okay, please elaborate.&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Okay, how do you know?&#39;</span>
+    <span class="p">]),</span>
+    <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;no|nope|not sure|I dont know|I do not know|never|none&#39;</span><span class="p">,</span> <span class="p">[</span>
+        <span class="s1">&#39;Okay, anything else you want to talk about? If not please say type done or stop.&#39;</span>
+    <span class="p">]),</span>
+    <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;I want (.*)&#39;</span><span class="p">,</span> <span class="p">[</span>
+        <span class="s1">&#39;Okay, and why do you think you want </span><span class="si">{}</span><span class="s1">?&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Okay, please elaborate on your interest in </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Can you tell me more about your desire for </span><span class="si">{}</span><span class="s1">?&#39;</span>
+    <span class="p">]),</span>
+    <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(.*)\?&#39;</span><span class="p">,</span> <span class="p">[</span>
+        <span class="s2">&quot;Why do you ask </span><span class="si">{}</span><span class="s2">?&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Why don&#39;t you tell me </span><span class="si">{}</span><span class="s2">?&quot;</span><span class="p">])</span>
 <span class="p">]</span>
 </pre></div>
 
@@ -14321,7 +14404,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define a function to handle pronoun substitution</span>
@@ -14332,8 +14415,17 @@ a.anchor-link {
         <span class="s2">&quot;you&quot;</span><span class="p">:</span> <span class="s2">&quot;I&quot;</span><span class="p">,</span>
         <span class="s2">&quot;my&quot;</span><span class="p">:</span> <span class="s2">&quot;your&quot;</span><span class="p">,</span>
         <span class="s2">&quot;your&quot;</span><span class="p">:</span> <span class="s2">&quot;my&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;mine&quot;</span><span class="p">:</span> <span class="s2">&quot;yours&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;yours&quot;</span><span class="p">:</span> <span class="s2">&quot;mine&quot;</span><span class="p">,</span>
         <span class="s2">&quot;me&quot;</span><span class="p">:</span> <span class="s2">&quot;you&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;am&quot;</span><span class="p">:</span> <span class="s2">&quot;are&quot;</span>
+        <span class="s2">&quot;am&quot;</span><span class="p">:</span> <span class="s2">&quot;are&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;are&quot;</span><span class="p">:</span> <span class="s2">&quot;am&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;you will&quot;</span><span class="p">:</span> <span class="s2">&quot;I will&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;I will&quot;</span><span class="p">:</span> <span class="s2">&quot;you will&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;I can&quot;</span><span class="p">:</span> <span class="s2">&quot;you can&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;you can&quot;</span><span class="p">:</span> <span class="s2">&quot;I can&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;I would&quot;</span><span class="p">:</span> <span class="s2">&quot;you would&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;I should&quot;</span><span class="p">:</span> <span class="s2">&quot;you should&quot;</span>
     <span class="p">}</span>
 
     <span class="n">words</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
@@ -14352,7 +14444,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define a function to generate a random response</span>
@@ -14369,7 +14461,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define a function to respond to user input</span>
@@ -14389,10 +14481,10 @@ a.anchor-link {
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Define a function for user&#39;s name</span>
@@ -14413,32 +14505,10 @@ a.anchor-link {
 </div>
 </div>
 
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>C:\Users\rebec\anaconda3\lib\site-packages\scipy\__init__.py:138: UserWarning: A NumPy version &gt;=1.16.5 and &lt;1.23.0 is required for this version of SciPy (detected version 1.24.4)
-  warnings.warn(f&#34;A NumPy version &gt;={np_minversion} and &lt;{np_maxversion} is required for this version of &#34;
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Main chat loop</span>
@@ -14449,7 +14519,7 @@ a.anchor-link {
     <span class="n">response</span> <span class="o">=</span> <span class="n">respond</span><span class="p">(</span><span class="n">user_input</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Eliza:&quot;</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">user_input</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;quit&#39;</span><span class="p">,</span> <span class="s1">&#39;exit&#39;</span><span class="p">,</span> <span class="s1">&#39;bye&#39;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">user_input</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;quit&#39;</span><span class="p">,</span> <span class="s1">&#39;exit&#39;</span><span class="p">,</span> <span class="s1">&#39;bye&#39;</span><span class="p">,</span> <span class="s1">&#39;done&#39;</span><span class="p">,</span> <span class="s1">&#39;stop&#39;</span><span class="p">]:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Eliza: Goodbye! Have a nice day, </span><span class="si">{</span><span class="n">user_name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
         <span class="k">break</span>
 <span class="c1">#Eliza: Hello! How can I assist you today? (Rebecca - I don&#39;t think we need this)</span>
@@ -14458,37 +14528,6 @@ a.anchor-link {
      </div>
 </div>
 </div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Eliza: Hello! I&#39;m Eliza, a psychotherapist. Please begin by stating your name.
-User:Cathy
-
-Eliza: Hello Cathy! How can I assist you today?
-You: Why can&#39;t I sleep
-Eliza: I am not sure what you mean. Can you rephrase that?
-You: I need sleep
-Eliza: What would it mean if you got sleep?
-You: Bye
-Eliza: Thank you for talking with me. Goodbye!
-Eliza: Goodbye! Have a nice day, Cathy!
-</pre>
-</div>
-</div>
-
-</div>
-
 </div>
 
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
