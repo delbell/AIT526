@@ -12,3 +12,6 @@ We accomplished this through the following steps:
 -Calculating the Cosine Similarity of the TF-IDF Matrix
 -creating the get_recommend function that finds the top 5 talks with the highest similarity score of the talk entered
 -the function spits out 5 recommended talks.
+
+
+To use the system, download and save the"ted_talk_en.csv" file to your machine. Run the entire kernal and make sure the csv file is findable via your directory. Scroll to the final cell. Here you will be presented with a text box prompting you to enter a TED Talk Title. After you enter it, you will be give 5 recommended TED Talks, based on the transcript of the one you typed. For example if the user enters 'Averting the climate crisis' the recommender will recommend 'New thinking on the climate crisis', 'A one-man world summit', 'A climate solution where all sides can win', 'Design and discovery', and 'Can we stop climate change by removing CO2 from the air?'
